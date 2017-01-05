@@ -79,7 +79,7 @@ router.route('/todolists')
             if (err)
                 return res.send(err);
 
-            res.json({message: 'TodoList created!'});
+            res.json({message: 'TodoList created!', todoList: todoList});
         });
 
 
