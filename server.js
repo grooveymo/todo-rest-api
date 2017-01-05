@@ -21,7 +21,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 // set our port
-var port = process.env.PORT || 8080;
+//var port = process.env.PORT || 8080;
+var port = process.env.PORT || 9090;
 
 // connect to our database
 mongoose.connect('mongodb://localhost/' + db);
@@ -42,6 +43,21 @@ var router = express.Router();
 router.use(function (req, res, next) {
     // do logging
     console.log('request received');
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+
     next();
 });
 
@@ -61,7 +77,7 @@ router.route('/todolists')
         todoList.title = req.body.title;  // set the Todo List Title (comes from the request)
         todoList.save(function (err) {
             if (err)
-                res.send(err);
+                return res.send(err);
 
             res.json({message: 'TodoList created!'});
         });
@@ -73,7 +89,7 @@ router.route('/todolists')
     .get(function (req, res) {
         TodoList.find(function (err, todoLists) {
             if (err)
-                res.send(err);
+                return res.send(err);
 
             res.json(todoLists);
         });
@@ -88,7 +104,7 @@ router.route('/todolists/:todoList_id')
     .get(function (req, res) {
         TodoList.findById(req.params.todoList_id, function (err, todoList) {
             if (err)
-                res.send(err);
+                return res.send(err);
             res.json(todoList);
         });
     })
@@ -100,7 +116,7 @@ router.route('/todolists/:todoList_id')
             _id: req.params.todoList_id
         }, function (err, todoList) {
             if (err)
-                res.send(err);
+                return res.send(err);
 
             res.json({message: 'Successfully deleted'});
         });
@@ -114,7 +130,7 @@ router.route('/todolists/:todoList_id/add')
 
         TodoList.findById(req.params.todoList_id, function (err, todoList) {
             if (err)
-                res.send(err);
+                return res.send(err);
 
             var todo = new Todo();		// create a new instance of the Todo model
             todo.description = req.body.description;  // set the Todo description (comes from the request)
@@ -138,7 +154,7 @@ router.route('/todolists/:todoList_id/remove/:todoId')
 
         TodoList.findById(req.params.todoList_id, function (err, todoList) {
             if (err)
-                res.send(err);
+                return res.send(err);
 
             todoList.todos.id(req.params.todoId).remove();
 
@@ -160,7 +176,7 @@ router.route('/todolists/:todoList_id/complete/:todoId')
 
         TodoList.findById(req.params.todoList_id, function (err, todoList) {
             if (err)
-                res.send(err);
+                return res.send(err);
 
             var todo = todoList.todos.find(function(element){
                 return element.id === req.params.todoId;
