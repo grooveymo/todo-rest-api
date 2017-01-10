@@ -17,7 +17,7 @@ RESTful api supporting creation and management of TODO Lists.
         > http://localhost:8080/api/todolists/5867ba89660bc4250bb20027
 
 5. Add Todo to TodoList
-    -PUT http://localhost:8080/api/todolists/add
+    -PUT http://localhost:8080/api/todolists/:todoList_id/add
         {description : 'number 1 todo task'}
 
 6. Togggle isCompleted status for a given Todo
