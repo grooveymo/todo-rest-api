@@ -27,5 +27,11 @@ RESTful api supporting creation and management of TODO Lists.
     - PUT http://localhost:8080/api/todolists/:todoList_Id/remove/todo_Id, i.e.
         > http://localhost:8080/api/todolists/5867ba74660bc4250bb20026/remove/5867bbdb660bc4250bb20028
 
+
+To deploy
+- navigate to db folder where we store mongo data
+- start up mongo db using 'startmongo' (mongod --dbpath ./)
+- do 'npm start'
+
 Notes
 i. Be sure to perform POST/PUT with x-www-form-urlencoded.
